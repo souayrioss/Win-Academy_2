@@ -1,23 +1,28 @@
-package com.win_academy;
-
-
-
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
-
+package org.example.entity;
+import org.example.DataSerializ;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
-public class Admins extends Users{
-    private static String json = "./src/main/java/data/Admins.txt" ;
+
+import static org.example.entity.Colleges.addCollege;
+import static org.example.entity.Groups.addGroup;
+import static org.example.librairies.IConstants.*;
+
+
+public class Admins extends Users implements Serializable{
+    private static final String json = "./src/main/java/data/Admins.txt" ;
     private String cin ;
 
     public Admins(String fullName, String email, String password, String tel, String cin) {
         super(fullName, email, password, tel);
         this.cin = cin;
     }
+
+    public Admins() {
+    }
+
 
     public String getCin() {
         return cin;
@@ -29,168 +34,151 @@ public class Admins extends Users{
 
     @Override
     public String toString() {
-        return "\n{" +
-                "\"cin\": " + '\"' + cin + '\"'   +
-                ", \"uuid\":"+ '\"' + uuid + '\"' +
-                ", \"fullName\":"+ '\"' + fullName + '\"' +
-                ", \"email\":"+ '\"' + email + '\"' +
-                ", \"tel\":"+ '\"' + password + '\"' +
-                ", \"tel\":"+ '\"' + tel + '\"' +
-                "},";
+        return "\nAdmins{" +
+
+                "cin='" + cin + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", tel='" + tel + '\'' +
+                ", role_id=" + role_id +
+                '}';
     }
-    public static void createAdmin() throws Exception {
-        Scanner myObj = new Scanner(System.in);
-        System.out.println("Enter nom et prenom ");
-        String fullName = myObj.nextLine();
-        System.out.println("Enter l'email ");
-        String email = myObj.nextLine();
-        System.out.println("Enter mot du passe ");
-        String password = myObj.nextLine();
-        System.out.println("Enter numero du telephone ");
-        String tel = myObj.nextLine();
-        System.out.println("Enter cin ");
-        String cin = myObj.nextLine();
-        Admins admins = new Admins(fullName,email,password,tel,cin);
-        File fichier = new File(json);
-        FileWriter fw = new FileWriter(fichier,true);
-        PrintWriter pw = new PrintWriter(fw);
-        pw.print(admins.toString());
-        pw.close();
-        mainAdmin();
-    }
-    public static void affichAdmin() {
-        JSONParser jsonP = new JSONParser();
-        try(FileReader reader =new FileReader(json) ){
-            Object obj = jsonP.parse(reader);
-            JSONArray AdminList =(JSONArray)obj;
-            System.out.println(AdminList.indexOf(1));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        try {
-            mainAdmin();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void logAdmin() throws Exception {
-        System.out.println("\t******************************************************************\n");
-        System.out.println("\t\t----------------Enter__Your__Email__&&__Password----------------\n");
-        System.out.println("\t******************************************************************");
-        String email;
-        String password;
-        Scanner MyChoix = new Scanner(System.in);
-        System.out.println("Enter votre email");
-        email = MyChoix.nextLine();
-        System.out.println("Enter votre password");
-        password = MyChoix.nextLine();
-        if(findAdmin(new File(json),email,password)){
-            mainAdmin();
-        }else
-            System.out.println("user not found");
-    }
-    public static boolean findAdmin(File f, String email , String password) throws IOException {
-        boolean result = false;
-        Scanner in = null;
-        try {
-            in = new Scanner(new FileReader(f));
-            while(in.hasNextLine() && !result) {
-                String str = in.nextLine();
-                if (str.contains(email)  &&  str.contains(password) )
-                    return true;
-            }
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            try { in.close() ; } catch(Exception e) { e.printStackTrace(); }
-        }
-        return false;
-
-    }
-    public static void modifAdmin(){}
-    public static void suppAdmin(){
-        Scanner in = null;
-        String currentLine;
-        String data[];
-        String email;
-
-        Scanner MyChoix = new Scanner(System.in);
-        System.out.println("Enter votre email");
-        email = MyChoix.nextLine();
-        try {
-            in = new Scanner(new FileReader(json));
-            FileWriter fw = new FileWriter("text.txt",true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
-
-            FileReader fr = new FileReader(json);
-            BufferedReader br = new BufferedReader(fr);
-
-            while(in.hasNextLine() ) {
-                String str = in.nextLine();
-                if (str.contains(email))
-                    pw.println(str);
-            }
-            pw.flush();
-            pw.close();
-            fr.close();
-            br.close();
-            bw.close();
-            fw.close();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            try { in.close() ; } catch(Exception e) { e.printStackTrace(); }
-        }
-
-    }
-
-    public static void mainAdmin() throws Exception {
-        System.out.println("\t******************************************************************\n");
-        System.out.println("\t\t----------------Hello__Admin----------------\n");
-        System.out.println("\t******************************************************************");
-        System.out.println("\t Creation de compte : 1\n");
-        System.out.println("\t Affichage des comptes : 2 \n");
-        System.out.println("\t Modifier des comptes: 3 \n");
-        System.out.println("\t Supprimer des comptes : 4\n");
-
-        int choix;
+    public static void mainAdmin(){
+        Map<Integer,String> options=new HashMap<>();
+        options.put(ADD_ETUDIANT,"Ajouter un etudiant ");
+        options.put(ADD_ENSEIGNANT,"Ajouter un enseignant");
+        options.put(ADD_ADMIN,"Ajouter un admin");
+        options.put(ADD_GROUP,"Ajouter Un groupe");
+        options.put(ADD_COLLEGE,"Ajouter Une college");
+        options.put(ADD_DEPARTEMENT,"Ajouter Une departement");
+        options.put(ADD_SALLE,"Ajouter Une sale");
+        options.keySet().stream().sorted().forEach(k-> System.out.println(k+" => "+options.get(k)));
+        Scanner scanner=new Scanner(System.in);
+        int option=-1;
         do{
-            Scanner MyChoix = new Scanner(System.in);
-            System.out.println("Enter votre choix entre 0 et 5");
-            choix = MyChoix.nextInt();
-        }while (choix < 1 || choix>4);
-        switch (choix) {
-            case 1:
-                choixUser();
+            System.out.println("Tapez le numéro correspondant à l'option de votre choix:\n");
+            option=scanner.nextInt();
+        }while(!(options.containsKey(option)));
+        switch(option){
+            case ADD_ETUDIANT:
+                menuAddUser(ROLE_ETUDIANT_ID);
                 break;
-            case 2:
-                affichUser();
+            case ADD_ENSEIGNANT:
+                menuAddUser(ROLE_ENSEIGNANT_ID);
                 break;
-            case 3:
-                modifUser();
+            case ADD_ADMIN:
+                menuAddUser(ROLE_ADMIN_ID);
                 break;
-            case 4:
-                suppUser();
+            case ADD_GROUP:
+                Groups newGroup = new Groups();
+                addGroup(newGroup);
+                break;
+            case ADD_COLLEGE:
+                Colleges newCollege = new Colleges();
+                addCollege(newCollege);
                 break;
         }
     }
-
-
-
+    public  static void menuAddUser(int newUserRole){
+        Users newUser = new Users() {
+        };
+        String userType="";
+        switch (newUserRole){
+            case ROLE_ETUDIANT_ID :
+                newUser=new Etudiants();
+                userType=" Etudiant ";
+                break;
+            case ROLE_ENSEIGNANT_ID:
+                newUser=new Enseignants();
+                userType=" Enseignant ";
+                break;
+            case ROLE_ADMIN_ID:
+                newUser=new Admins();
+                userType=" Admin ";
+                break;
+        }
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("insertion d'un nouveau "+userType+":");
+        System.out.println("veillez saisir le nom de l'"+userType);
+        newUser.setFullName(scanner.nextLine());
+        System.out.println("veillez saisir l'email de l'"+ userType );
+        newUser.setEmail(scanner.nextLine());
+        System.out.println("veillez saisir le mot de pass de l'"+userType);
+        newUser.setPassword(scanner.nextLine());
+        System.out.println("veillez saisir le numero de telphone de l'"+userType);
+        newUser.setTel(scanner.nextLine());
+        switch (newUserRole){
+            case ROLE_ETUDIANT_ID :
+                newUser.setRole_id(ROLE_ETUDIANT_ID);
+                System.out.print("veillez saisir le code de l'"+userType + " : " );
+                ((Etudiants)newUser).setCode(scanner.nextLine());
+                System.out.print("veillez saisir l' annee_scolaire de l'"+userType + " : " );
+                ((Etudiants)newUser).setAnnee_scolaire(scanner.nextLine());
+                System.out.println("veillez saisir le group de l'"+userType + " : " );
+                System.out.println("JAVA => 1");
+                System.out.println("JAVASCRIPT_1 => 2");
+                System.out.println("JAVASCRIPT_2 => 3");
+                int choix ;
+                do {
+                    System.out.print("veillez entrer votre choix : ");
+                    choix = scanner.nextInt();
+                }while (choix < 1 || choix >2);
+                if(choix== ID_GROUP_JAVA)
+                    ((Etudiants)newUser).setGroup_id(ID_GROUP_JAVA);
+                if (choix == ID_GROUP_JAVASCRIPT_1)
+                    ((Etudiants)newUser).setGroup_id(ID_GROUP_JAVASCRIPT_1);
+                if (choix == ID_GROUP_JAVASCRIPT_2)
+                    ((Etudiants)newUser).setGroup_id(ID_GROUP_JAVASCRIPT_2);
+                System.out.println("Quelle college partient ce "+userType + " : ");
+                System.out.println("BROOK => 1");
+                System.out.println("ZORO => 2");
+                do {
+                    System.out.print("veillez entrer votre choix : ");
+                    choix = scanner.nextInt();
+                }while (choix < 1 || choix >2);
+                if(choix== ID_COLLEGE_BROOK)
+                    ((Etudiants)newUser).setCollege_id(ID_COLLEGE_BROOK);
+                if (choix == ID_COLLEGE_ZORO)
+                    ((Etudiants)newUser).setCollege_id(ID_COLLEGE_ZORO);
+                break;
+            case ROLE_ENSEIGNANT_ID:
+                newUser.setRole_id(ROLE_ENSEIGNANT_ID);
+                System.out.println("veillez saisir le CIN de l'"+userType);
+                ((Enseignants)newUser).setCin(scanner.nextLine());
+                System.out.println("Quelle Deppartement partient ce "+userType + " : ");
+                System.out.println("JAVA => 1");
+                System.out.println("JAVASCRIPT => 2");
+                System.out.println("PHP => 3");
+                System.out.println(".NET => 4");
+                do {
+                    System.out.print("veillez entrer votre choix : ");
+                    choix = scanner.nextInt();
+                }while (choix < 1 || choix >4);
+                if(choix== ID_DEPARTEMENT_JAVA){
+                    ((Enseignants)newUser).setDepatement_id(ID_DEPARTEMENT_JAVA);
+                    ((Enseignants)newUser).setMatiere_id(ID_MATIERE_JAVA);
+                }
+                else if (choix == ID_DEPARTEMENT_JAVASCRIPT){
+                    ((Enseignants)newUser).setDepatement_id(ID_DEPARTEMENT_JAVASCRIPT);
+                    ((Enseignants)newUser).setMatiere_id(ID_MATIERE_JAVASCRIPT);
+                }
+                else if(choix== ID_DEPARTEMENT_PHP){
+                    ((Enseignants)newUser).setDepatement_id(ID_DEPARTEMENT_PHP);
+                    ((Enseignants)newUser).setMatiere_id(ID_MATIERE_PHP);
+                }
+                else if (choix == ID_DEPARTEMENT_DOT_NET){
+                    ((Enseignants)newUser).setDepatement_id(ID_DEPARTEMENT_DOT_NET);
+                    ((Enseignants)newUser).setMatiere_id(ID_MATIERE_DOT_NET);
+                }
+                break;
+            case ROLE_ADMIN_ID:
+                newUser.setRole_id(ROLE_ADMIN_ID);
+                System.out.println("veillez saisir le CIN de l'"+userType);
+                ((Admins)newUser).setCin(scanner.nextLine());
+                break;
+        }
+        DataSerializ.getInstance().users.add(newUser);
+    }
 }
-/*
 
-
- */

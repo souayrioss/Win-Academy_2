@@ -1,4 +1,4 @@
-package com.win_academy;
+package org.example.entity;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,9 +8,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.win_academy.Admins.mainAdmin;
-import static com.win_academy.Enseignants.mainEnseignant;
 
 public class Notes {
     private static final AtomicInteger count = new AtomicInteger(0);

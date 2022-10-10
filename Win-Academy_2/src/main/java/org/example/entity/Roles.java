@@ -1,18 +1,16 @@
-package com.win_academy;
+package org.example.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Roles {
-    private static final AtomicInteger count = new AtomicInteger(0);
-    private final int id_role ;
+public class Roles implements Serializable {
+    private  int id_role ;
     private String role;
-    private ArrayList<Users> users ;
 
-    public Roles(String role) {
-        this.id_role = count.incrementAndGet();
+    public Roles(int id_role,String role) {
+        this.id_role = id_role;
         this.role = role;
-        this.users = new ArrayList<Users>();
     }
 
     public int getId_role() {
@@ -27,12 +25,5 @@ public class Roles {
         this.role = role;
     }
 
-    public ArrayList<Users> getUsers() {
-        return users;
-    }
-
-    public void setUsers(ArrayList<Users> user) {
-        this.users = user;
-    }
 }
 

@@ -1,4 +1,4 @@
-package com.win_academy;
+package org.example.entity;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
