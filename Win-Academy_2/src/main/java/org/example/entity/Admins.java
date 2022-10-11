@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 
 import static org.example.entity.Colleges.addCollege;
+import static org.example.entity.Departements.addDepartement;
 import static org.example.entity.Groups.addGroup;
 import static org.example.librairies.IConstants.*;
 
@@ -45,6 +46,8 @@ public class Admins extends Users implements Serializable{
                 '}';
     }
     public static void mainAdmin(){
+        int option;
+        do {
         Map<Integer,String> options=new HashMap<>();
         options.put(ADD_ETUDIANT,"Ajouter un etudiant ");
         options.put(ADD_ENSEIGNANT,"Ajouter un enseignant");
@@ -55,7 +58,7 @@ public class Admins extends Users implements Serializable{
         options.put(ADD_SALLE,"Ajouter Une sale");
         options.keySet().stream().sorted().forEach(k-> System.out.println(k+" => "+options.get(k)));
         Scanner scanner=new Scanner(System.in);
-        int option=-1;
+
         do{
             System.out.println("Tapez le numéro correspondant à l'option de votre choix:\n");
             option=scanner.nextInt();
@@ -78,7 +81,12 @@ public class Admins extends Users implements Serializable{
                 Colleges newCollege = new Colleges();
                 addCollege(newCollege);
                 break;
+            case ADD_DEPARTEMENT:
+                Departements newDepartement = new Departements();
+                addDepartement(newDepartement);
+                break;
         }
+        }while (option!=0);
     }
     public  static void menuAddUser(int newUserRole){
         Users newUser = new Users() {

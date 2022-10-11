@@ -1,6 +1,7 @@
 package org.example;
 import static org.example.entity.Admins.*;
 
+import static org.example.entity.Enseignants.mainEnseginatn;
 import static org.example.librairies.IConstants.*;
 public class Main {
     private static DataSerializ dataSerializ;
@@ -16,7 +17,7 @@ public class Main {
             mainAdmin();
         }
         if (DataSerializ.isConnected.getRole_id() == ROLE_ENSEIGNANT_ID) {
-            System.out.println("ENseign");
+            mainEnseginatn();
         }
         if (DataSerializ.isConnected.getRole_id() == ROLE_ETUDIANT_ID) {
             System.out.println("Etudianr....");

@@ -13,6 +13,8 @@ public interface IConstants {
     public  static int ID_DEPARTEMENT_PHP = 3;
     public  static int ID_DEPARTEMENT_DOT_NET = 4;
 
+    public static int DIS_ETUDIANT = 1;
+
     public  static int ID_MATIERE_JAVA = 1;
     public  static int ID_MATIERE_JAVASCRIPT = 2;
     public  static int ID_MATIERE_PHP = 3;
@@ -21,6 +23,8 @@ public interface IConstants {
     public  static int ID_GROUP_JAVASCRIPT_1 = 2;
     public  static int ID_GROUP_JAVASCRIPT_2 = 3;
 
+    public  static  int ADD_NOTE = 3;
+    public  static  int DIS_ETUDIANT_DEPARTEMENT = 2;
     public  static int ADD_ETUDIANT = 1;
     public  static int ADD_ENSEIGNANT = 2;
 

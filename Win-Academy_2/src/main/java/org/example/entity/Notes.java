@@ -1,10 +1,7 @@
 package org.example.entity;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,6 +18,7 @@ public class Notes {
         this.matiere = matiere;
     }
 
+    
     public static void ajtNote(ArrayList<Notes> notes)  {
         int numNote;
         Scanner myObj = new Scanner(System.in);
@@ -36,7 +34,6 @@ public class Notes {
             Float note = myObj.nextFloat();
             notes.add(new Notes(note, matiere));
         }
-
     }
     public static void affichNote(ArrayList<Notes> notes)  {
         System.out.println("affiiiiche note");

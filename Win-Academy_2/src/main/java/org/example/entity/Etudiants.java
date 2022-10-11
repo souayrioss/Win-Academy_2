@@ -1,9 +1,11 @@
 package org.example.entity;
 
+import org.example.DataSerializ;
+
 import java.io.*;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+
+import static org.example.librairies.IConstants.*;
 
 public class Etudiants extends Users implements Serializable {
     private String code ;
@@ -66,5 +68,31 @@ public class Etudiants extends Users implements Serializable {
                 ", tel='" + tel + '\'' +
                 ", role_id=" + role_id +
                 '}';
+    }
+    public static void displayEtudiant(){
+        List<Users> listEtudiant= DataSerializ.getInstance().users.stream().filter(user->user.getRole_id() == ROLE_ETUDIANT_ID).toList();
+        Iterator<Users> it = listEtudiant.iterator();
+        while(it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
+    public static List<Etudiants> displayEtudiantParGroup(){
+        System.out.println("1 . JAVA \n");
+        System.out.println("2 . JAVASCRIPT_1 \n");
+        System.out.println("3 . JAVASCRIPT_2 \n");
+        Scanner scanner=new Scanner(System.in);
+        int choix =scanner.nextInt();
+
+        List<Users> listEtudiant= DataSerializ.getInstance().users.stream().filter(user->user.getRole_id() == ROLE_ETUDIANT_ID).toList();
+        Iterator<Users> it = listEtudiant.iterator();
+        List<Etudiants> e = new ArrayList<>();
+        while(it.hasNext()) {
+            Etudiants etudiant = (Etudiants)it.next();
+            if (etudiant.group_id == choix  ) {
+                e.add(etudiant);
+            }
+
+        }
+        return e;
     }
 }

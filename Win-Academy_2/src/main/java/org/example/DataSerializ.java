@@ -32,7 +32,7 @@ public class DataSerializ implements Serializable {
             if(!ChargeData()){
                 dataSerializ=new DataSerializ();
                 dataSerializ.CreateData();
-            };
+            }
         }
         return dataSerializ;
     }
